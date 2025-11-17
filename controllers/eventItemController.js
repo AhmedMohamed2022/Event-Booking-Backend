@@ -294,8 +294,20 @@ exports.searchEventItems = async (req, res) => {
 
     if (minPrice || maxPrice) {
       query.price = {};
-      if (minPrice) query.price.$gte = parseInt(minPrice);
-      if (maxPrice) query.price.$lte = parseInt(maxPrice);
+      if (minPrice) {
+        const minVal = parseInt(minPrice);
+        // Only add price filter if minPrice is a valid number and not NaN
+        if (!isNaN(minVal)) {
+          query.price.$gte = minVal;
+        }
+      }
+      if (maxPrice) {
+        const maxVal = parseInt(maxPrice);
+        // Only add price filter if maxPrice is a valid number and not NaN
+        if (!isNaN(maxVal)) {
+          query.price.$lte = maxVal;
+        }
+      }
     }
 
     const results = await EventItem.find(query)

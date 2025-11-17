@@ -25,6 +25,7 @@ const chatRoutes = require("./routes/chatRoutes");
 const subscriptionRoutes = require("./routes/subscriptionRoutes");
 const contactRoutes = require("./routes/contactRoutes");
 const contactMessageRoutes = require("./routes/contactMessageRoutes");
+const wishlistRoutes = require("./routes/wishlistRoutes");
 
 const app = express();
 app.set("trust proxy", 1); // trust first proxy
@@ -91,6 +92,9 @@ app.use("/api/join", authLimiter, joinRoutes);
 
 // Protected API routes - more generous limits
 app.use("/api/event-items", apiLimiter, eventItemRoutes);
+// Ratings for event items (create/update by authenticated users, public listing/summary)
+const ratingRoutes = require("./routes/ratingRoutes");
+app.use("/api/event-items/:id/ratings", apiLimiter, ratingRoutes);
 app.use("/api/bookings", apiLimiter, bookingRoutes);
 app.use("/api/admin", apiLimiter, adminRoutes);
 app.use("/api/supplier", apiLimiter, supplierRoutes);
@@ -98,6 +102,7 @@ app.use("/api/chat", apiLimiter, chatRoutes);
 app.use("/api/subscription", apiLimiter, subscriptionRoutes);
 app.use("/api/contact", apiLimiter, contactMessageRoutes);
 app.use("/api/contact-request", apiLimiter, contactRoutes);
+app.use("/api/wishlist", apiLimiter, wishlistRoutes);
 
 // 🏁 Root test
 app.get("/", (req, res) => res.send("✅ Event Booking API is running."));

@@ -57,6 +57,9 @@ const eventItemSchema = new mongoose.Schema(
       instagram: String,
       facebook: String,
     },
+    // Aggregated rating fields (denormalized for fast reads)
+    averageRating: { type: Number, default: 0 },
+    ratingCount: { type: Number, default: 0 },
   },
   { timestamps: true }
 );
